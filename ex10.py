@@ -44,6 +44,12 @@ def row_echelon():
     [3, 6, 9]  
 ])
     print(m.row_echelon())
+
+    m = Matrix([
+        [1., 2.],
+        [3., 4.]
+    ])
+    print(m.row_echelon());
     
 if __name__ == "__main__":
     row_echelon()

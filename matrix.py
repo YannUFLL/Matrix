@@ -197,6 +197,16 @@ class Matrix:
                 # elimination of x 
                 for k in range(i, m_cols):
                     r[j][k] -= (r[i][k] * factor)
+
+            # step 4 : normalisation of the diagonale
+            pivot = r[i][i]
+            if pivot != 0:
+                for j in range (i, m_cols):
+                    r[i][j] /= pivot;
+
+
+
+
         return(r)
 
 
@@ -224,13 +234,6 @@ class Matrix:
             m_ech = self.row_echelon()
             return  (m_ech[0][0] * m_ech[1][1] * m_ech[2][2] * m_ech[3][3])
 
-           
-
-
-
-            
-
-          
 
 def linear_combination(u : list[Vector], coefs : list):
     if len(u) != len(coefs):
