@@ -291,6 +291,14 @@ class Matrix:
             m_ech = self._forward_elimination(False)
             return  (m_ech[0][0] * m_ech[1][1] * m_ech[2][2] * m_ech[3][3])
 
+    def inverse(self):
+        m_rows, m_cols = self.shape()
+        r = Matrix([[self[i][j] for j in range(m_cols)] + [ 0 if j != i else 1 for j in range (m_cols)]for i in range(m_rows)])
+        e = r.row_echelon()
+        r = Matrix([e[row][m_cols:] for row in range(m_rows)])
+        return(r)
+
+
 
 def linear_combination(u : list[Vector], coefs : list):
     if len(u) != len(coefs):
