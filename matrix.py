@@ -172,41 +172,98 @@ class Matrix:
                 r[j][i] = self[i][j]
         return (r)
 
-    def row_echelon(self):
+    def _gauss_method(self):
         m_rows, m_cols = self.shape()
         r = Matrix([[self[i][j] for j in range(m_cols)] for i in range(m_rows)])
-        # step find wich line to swap
-        for i in range(m_rows):
+        p_y = 0
+        i = 0
+        while i < m_rows and p_y < m_cols:
             tmp = 0 
             line_to_swap = i
-            # step 1 find the pivot
+            # step 1: find the pivot
             for j in range(i, m_rows):
-                if abs(r[j][i]) > tmp and r[j][i] != 0:
-                    tmp = abs(r[j][i])
+                if abs(r[j][p_y]) > tmp and r[j][p_y] != 0:
+                    tmp = abs(r[j][p_y])
                     line_to_swap = j
-            # step 2 swap line
+            if tmp == 0:
+                p_y += 1
+                continue
+            
+            # step 2: swap line
             tmp = r[i]
             r.data[i] = r.data[line_to_swap]
             r.data[line_to_swap] = tmp
-            # step 3 : elimination of the others unknow of the same var
+            # step 3: elimination of the others unknow bellow the pivot
             for j in range(i + 1, m_rows):
-                if r[i][i] == 0:
+                if r[i][p_y] == 0:
                     continue
-                factor = r[j][i] / r[i][i] 
+                factor = r[j][p_y] / r[i][p_y] 
                 # factorisation of the line
                 # elimination of x 
-                for k in range(i, m_cols):
+                for k in range(p_y, m_cols):
+                    r[j][k] -= (r[i][k] * factor)
+        return(r)
+
+    def _forward_elimination(self, normalize=False):
+        m_rows, m_cols = self.shape()
+        r = Matrix([[self[i][j] for j in range(m_cols)] for i in range(m_rows)])
+        p_y = 0
+        i = 0
+        while i < m_rows and p_y < m_cols:
+            tmp = 0 
+            line_to_swap = i
+            # step 1: find the pivot
+            for j in range(i, m_rows):
+                if abs(r[j][p_y]) > tmp and r[j][p_y] != 0:
+                    tmp = abs(r[j][p_y])
+                    line_to_swap = j
+            if tmp == 0:
+                p_y += 1
+                continue
+            
+            # step 2: swap line
+            tmp = r[i]
+            r.data[i] = r.data[line_to_swap]
+            r.data[line_to_swap] = tmp
+            # step 3: elimination of the others unknow bellow the pivot
+            for j in range(i + 1, m_rows):
+                if r[i][p_y] == 0:
+                    continue
+                factor = r[j][p_y] / r[i][p_y] 
+                # factorisation of the line
+                # elimination of x 
+                for k in range(p_y, m_cols):
                     r[j][k] -= (r[i][k] * factor)
 
-            # step 4 : normalisation of the diagonale
-            pivot = r[i][i]
-            if pivot != 0:
-                for j in range (i, m_cols):
-                    r[i][j] /= pivot;
+            # step 4: normalisation of the diagonale
+            if normalize:
+                pivot = r[i][p_y]
+                if pivot != 0:
+                    for j in range(p_y, m_cols):
+                        r[i][j] /= pivot
+            p_y += 1 
+            i += 1
+        return(r)
 
 
-
-
+    def row_echelon(self):
+        r = self._forward_elimination(True)
+        m_rows, m_cols = self.shape()
+        # if a pivot is found, elimination of the other unknows above him
+        for i in range(m_rows - 1, -1, -1):
+            p_y = -1
+            # search of the first pivot
+            for c in range(i, m_cols):
+                if abs(r[i][c]) != 0:
+                    p_y  = c
+                    break; 
+            if p_y == -1:
+                continue
+            for j in range(i - 1, -1, -1):
+                if r[j][p_y] != 0:
+                    factor = r[j][p_y] / r[i][p_y]
+                    for k in range(p_y, m_cols):
+                        r[j][k] -= (r[i][k] * factor)
         return(r)
 
 
@@ -231,7 +288,7 @@ class Matrix:
                     + (self[0][1] * self[1][0] * self[2][1]))
         # Gauss method
         if m_rows == 4:
-            m_ech = self.row_echelon()
+            m_ech = self._forward_elimination(False)
             return  (m_ech[0][0] * m_ech[1][1] * m_ech[2][2] * m_ech[3][3])
 
 
