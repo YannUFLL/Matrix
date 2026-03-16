@@ -209,6 +209,7 @@ class Matrix:
         r = Matrix([[self[i][j] for j in range(m_cols)] for i in range(m_rows)])
         p_y = 0
         i = 0
+        swaps = 0
         while i < m_rows and p_y < m_cols:
             tmp = 0 
             line_to_swap = i
@@ -222,9 +223,11 @@ class Matrix:
                 continue
             
             # step 2: swap line
-            tmp = r[i]
-            r.data[i] = r.data[line_to_swap]
-            r.data[line_to_swap] = tmp
+            if line_to_swap != i:
+                tmp = r[i]
+                r.data[i] = r.data[line_to_swap]
+                r.data[line_to_swap] = tmp
+                swaps += 1
             # step 3: elimination of the others unknow bellow the pivot
             for j in range(i + 1, m_rows):
                 if r[i][p_y] == 0:
@@ -243,11 +246,11 @@ class Matrix:
                         r[i][j] /= pivot
             p_y += 1 
             i += 1
-        return(r)
+        return(r, swaps)
 
 
     def row_echelon(self):
-        r = self._forward_elimination(True)
+        r,_ = self._forward_elimination(True)
         m_rows, m_cols = self.shape()
         # if a pivot is found, elimination of the other unknows above him
         for i in range(m_rows - 1, -1, -1):
@@ -283,20 +286,31 @@ class Matrix:
             return (((self[0][0] * self[1][1] * self[2][2]) 
                     + (self[0][1] * self[1][2] * self[2][0])
                     + (self[0][2] * self[1][0] * self[2][1])) - 
-                    + (self[0][2] * self[1][1] * self[2][0])
+                     (self[0][2] * self[1][1] * self[2][0])
                     + (self[0][0] * self[1][2] * self[2][1])
-                    + (self[0][1] * self[1][0] * self[2][1]))
+                    + (self[0][1] * self[1][0] * self[2][2]))
         # Gauss method
         if m_rows == 4:
-            m_ech = self._forward_elimination(False)
-            return  (m_ech[0][0] * m_ech[1][1] * m_ech[2][2] * m_ech[3][3])
+            m_ech, swaps = self._forward_elimination(False)
+            det = m_ech[0][0] * m_ech[1][1] * m_ech[2][2] * m_ech[3][3]
+            if swaps % 2 != 0:
+                det = -det
+            return  (det)
 
     def inverse(self):
         m_rows, m_cols = self.shape()
-        r = Matrix([[self[i][j] for j in range(m_cols)] + [ 0 if j != i else 1 for j in range (m_cols)]for i in range(m_rows)])
-        e = r.row_echelon()
-        r = Matrix([e[row][m_cols:] for row in range(m_rows)])
-        return(r)
+        if m_rows != m_cols:
+            raise ValueError("Only square matrice can be inverted")
+        m_ref,_ = self._forward_elimination(False)
+        d = m_ref[0][0]
+        for i in range(1, m_rows):
+            d *= m_ref[i][i]
+        if abs(d) <= 1e-10:
+            raise ValueError("Matrix is singular, no inverse exists.")
+        augmented_data = Matrix([[self[i][j] for j in range(m_cols)] + [ 0 if j != i else 1 for j in range (m_cols)]for i in range(m_rows)])
+        res_rref = augmented_data.row_echelon()
+        inverse_data = Matrix([res_rref[row][m_cols:] for row in range(m_rows)])
+        return(inverse_data)
 
 
 

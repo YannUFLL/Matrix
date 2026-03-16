@@ -2,8 +2,8 @@ from matrix import Vector, Matrix
 
 def inverse():
     m = Matrix([[1, 0, 0],
-                [0, 1, 0],
-                [0, 0, 1]])
+                [0, 1,0],
+                [0, 0,1]])
     print("matrice:", m)
     print("inverse:", m.inverse())
 
