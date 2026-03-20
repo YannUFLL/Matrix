@@ -45,6 +45,8 @@ class Vector:
             self.data[i] *= a
 
     def dot(self, v):
+        if not isinstance(v, Vector):
+            return ValueError("dot excepts one Vector instance as argument.")
         if self.size() != v.size():
             return ValueError("Size incompatibles")
         res = 0
@@ -127,6 +129,8 @@ class Matrix:
                 self.data[i][j] *= a
 
     def mul_vec(self, vec):
+        if not isinstance(vec, Vector):
+            return ValueError("mul_vec excepts a matrice instance as argument.")
         m_rows, m_cols = self.shape()
         v_rows = vec.size()
         ret = Vector([0.0] * m_rows)
@@ -141,6 +145,9 @@ class Matrix:
         return ret
 
     def mul_mat(self, mat):
+        if not isinstance(mat, Matrix):
+            return ValueError("mul_mat excepts a matrice instance as argument.")
+        
         m1_rows, m1_cols = self.shape()
         m2_rows, m2_cols = mat.shape()
         if m1_cols != m2_rows:
@@ -158,7 +165,7 @@ class Matrix:
     def trace(self):
         m_rows, m_cols = self.shape()
         if (m_rows != m_cols): 
-            raise ValueError("Can't compute trace with no square Matrix")
+            raise ValueError("Can't compute trace with no square Matrix.")
         t = 0
         for i in range(m_rows):
             t += self[i][i]
@@ -273,7 +280,7 @@ class Matrix:
     def determinant(self):
         m_rows, m_cols = self.shape()
         if m_rows != m_cols:
-            return (ValueError("Matrix must be square to compute determinant"))
+            return (ValueError("Matrix must be square to compute determinant."))
         if m_rows > 4:
             return (ValueError("Determinant for matrices larger than 4x4 is not implemented."))
         if m_rows == 1:
@@ -300,7 +307,7 @@ class Matrix:
     def inverse(self):
         m_rows, m_cols = self.shape()
         if m_rows != m_cols:
-            raise ValueError("Only square matrice can be inverted")
+            raise ValueError("Only square matrice can be inverted.")
         m_ref,_ = self._forward_elimination(False)
         d = m_ref[0][0]
         for i in range(1, m_rows):
@@ -312,9 +319,21 @@ class Matrix:
         inverse_data = Matrix([res_rref[row][m_cols:] for row in range(m_rows)])
         return(inverse_data)
 
-
+    def rank(self):
+        m_ech, _ = self._forward_elimination(False)
+        m_rows, m_cols = m_ech.shape()
+        rank  = 0
+        epsilon = 1e-10
+        for i in range(m_rows):
+            for j in range (m_cols):
+                if (m_ech[i][j]) > epsilon:
+                    rank += 1
+                    break
+        return (rank)
 
 def linear_combination(u : list[Vector], coefs : list):
+    if not isinstance(u, list[Vector]):
+        return ValueError("linear_combination excepts a list of Vector instances as first argument.")
     if len(u) != len(coefs):
         raise ValueError("Size incompatibles")
 
@@ -340,22 +359,16 @@ def lerp(u, v, t):
         return (u * (1 - t) + v * t)
 
 def angle_cos(u,v):
+    if not isinstance(u, Vector) or not isinstance(u, Vector):
+        return ValueError("angle_cos excepts two Vector instances as arguments.")
     if u.size() != v.size():
-        return ValueError("Size incompatibles")
+        return ValueError("Size incompatibles.")
     return (u.dot(v) / (u.norm() * v.norm()))
 
 def cross_product(u, v):
+    if not isinstance(u, Vector) or not isinstance(u, Vector):
+        return ValueError("cross_product excepts two Vector instances as arguments.")
     x = u[1] * v[2] - u[2] * v[1]
     y = - (u[0] *  v[2]- u[2] *v[0])  
     z =  u[0] * v[1]- u[1] * v[0]
     return Vector([x,y,z])
-
-    
-
-    
-
-        
-
-
-
-
