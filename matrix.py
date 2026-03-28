@@ -1,3 +1,4 @@
+import math
 class Vector: 
     def __init__(self, data):
         self.data = list(data)
@@ -372,3 +373,15 @@ def cross_product(u, v):
     y = - (u[0] *  v[2]- u[2] *v[0])  
     z =  u[0] * v[1]- u[1] * v[0]
     return Vector([x,y,z])
+
+def projection(fovY, aspectRatio, near, far):
+    rad_fovY = math.radians(fovY)
+    tangent = math.tan(rad_fovY / 2)
+    top = near * tangent
+    right = top * aspectRatio
+    
+    p_matrice = Matrix([[(near / right), 0, 0, 0],
+                        [0, near/top, 0, 0], 
+                        [0, 0, -far / (far - near), -(far * near) / (far - near)], 
+                        [0, 0, -1, 0]])
+    return p_matrice.transpose()

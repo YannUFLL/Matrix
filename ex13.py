@@ -1,5 +1,5 @@
 from matrix import Vector, Matrix
-
+import math
 def rank():
     m = Matrix([[1, 0],
                 [0, 1],
