@@ -47,12 +47,12 @@ class Vector:
 
     def dot(self, v):
         if not isinstance(v, Vector):
-            return ValueError("dot excepts one Vector instance as argument.")
+            raise ValueError("dot excepts one Vector instance as argument.")
         if self.size() != v.size():
-            return ValueError("Size incompatibles")
+            raise ValueError("Size incompatibles")
         res = 0
         for i in range(v.size()):
-            res += self[ i] * v[i]
+            res += self[i] * v[i]
         return res
 
     def norm_1(self):
@@ -131,13 +131,13 @@ class Matrix:
 
     def mul_vec(self, vec):
         if not isinstance(vec, Vector):
-            return ValueError("mul_vec excepts a matrice instance as argument.")
+            raise ValueError("mul_vec excepts a matrice instance as argument.")
         m_rows, m_cols = self.shape()
         v_rows = vec.size()
         ret = Vector([0.0] * m_rows)
         tmp = 0
         if m_cols != v_rows:
-            return ValueError("The number of matrice column must be the same as vector row")
+            raise ValueError("The number of matrice column must be the same as vector row")
         for i in range(m_rows):
             tmp = 0
             for j in range (m_cols):
@@ -147,7 +147,7 @@ class Matrix:
 
     def mul_mat(self, mat):
         if not isinstance(mat, Matrix):
-            return ValueError("mul_mat excepts a matrice instance as argument.")
+            raise ValueError("mul_mat excepts a matrice instance as argument.")
         
         m1_rows, m1_cols = self.shape()
         m2_rows, m2_cols = mat.shape()
@@ -281,9 +281,9 @@ class Matrix:
     def determinant(self):
         m_rows, m_cols = self.shape()
         if m_rows != m_cols:
-            return (ValueError("Matrix must be square to compute determinant."))
+            raise ValueError("Matrix must be square to compute determinant.")
         if m_rows > 4:
-            return (ValueError("Determinant for matrices larger than 4x4 is not implemented."))
+            raise ValueError("Determinant for matrices larger than 4x4 is not implemented.")
         if m_rows == 1:
             return self[0][0]
         # Cramer rule
@@ -332,9 +332,9 @@ class Matrix:
                     break
         return (rank)
 
-def linear_combination(u : list[Vector], coefs : list):
-    if not isinstance(u, list[Vector]):
-        return ValueError("linear_combination excepts a list of Vector instances as first argument.")
+def linear_combination(u : list, coefs : list):
+    if not isinstance(u, list):
+        raise ValueError("linear_combination excepts a list of Vector instances as first argument.")
     if len(u) != len(coefs):
         raise ValueError("Size incompatibles")
 
@@ -360,15 +360,15 @@ def lerp(u, v, t):
         return (u * (1 - t) + v * t)
 
 def angle_cos(u,v):
-    if not isinstance(u, Vector) or not isinstance(u, Vector):
-        return ValueError("angle_cos excepts two Vector instances as arguments.")
+    if not isinstance(u, Vector) or not isinstance(v, Vector):
+        raise ValueError("angle_cos excepts two Vector instances as arguments.")
     if u.size() != v.size():
-        return ValueError("Size incompatibles.")
+        raise ValueError("Size incompatibles.")
     return (u.dot(v) / (u.norm() * v.norm()))
 
 def cross_product(u, v):
-    if not isinstance(u, Vector) or not isinstance(u, Vector):
-        return ValueError("cross_product excepts two Vector instances as arguments.")
+    if not isinstance(u, Vector) or not isinstance(v, Vector):
+        raise ValueError("cross_product excepts two Vector instances as arguments.")
     x = u[1] * v[2] - u[2] * v[1]
     y = - (u[0] *  v[2]- u[2] *v[0])  
     z =  u[0] * v[1]- u[1] * v[0]
