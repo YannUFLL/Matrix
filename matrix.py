@@ -1,4 +1,10 @@
 import math
+
+def is_zero(x, epsilon=1e-10):
+    if isinstance(x, complex):
+        return abs(x.real) < epsilon and abs(x.imag) < epsilon
+    return abs(x) < epsilon
+
 class Vector: 
     def __init__(self, data):
         self.data = list(data)
@@ -64,7 +70,11 @@ class Vector:
     def norm(self):
         n1 = 0
         for i in range(self.size()):
-            n1 += (self[i] * self[i])
+            val = self[i]
+            if isinstance(val, complex):
+                n1 += val.real**2 + val.imag**2
+            else:
+                n1 += val * val
         return n1 ** 0.5
 
     def norm_inf(self):
@@ -190,7 +200,7 @@ class Matrix:
             line_to_swap = i
             # step 1: find the pivot
             for j in range(i, m_rows):
-                if abs(r[j][p_y]) > tmp and r[j][p_y] != 0:
+                if abs(r[j][p_y]) > tmp and not is_zero(r[j][p_y]):
                     tmp = abs(r[j][p_y])
                     line_to_swap = j
             if tmp == 0:
@@ -203,7 +213,7 @@ class Matrix:
             r.data[line_to_swap] = tmp
             # step 3: elimination of the others unknow bellow the pivot
             for j in range(i + 1, m_rows):
-                if r[i][p_y] == 0:
+                if is_zero(r[i][p_y]):
                     continue
                 factor = r[j][p_y] / r[i][p_y] 
                 # factorisation of the line
@@ -223,7 +233,7 @@ class Matrix:
             line_to_swap = i
             # step 1: find the pivot
             for j in range(i, m_rows):
-                if abs(r[j][p_y]) > tmp and r[j][p_y] != 0:
+                if abs(r[j][p_y]) > tmp and not is_zero(r[j][p_y]):
                     tmp = abs(r[j][p_y])
                     line_to_swap = j
             if tmp == 0:
@@ -238,7 +248,7 @@ class Matrix:
                 swaps += 1
             # step 3: elimination of the others unknow bellow the pivot
             for j in range(i + 1, m_rows):
-                if r[i][p_y] == 0:
+                if is_zero(r[i][p_y]):
                     continue
                 factor = r[j][p_y] / r[i][p_y] 
                 # factorisation of the line
@@ -249,7 +259,7 @@ class Matrix:
             # step 4: normalisation of the diagonale
             if normalize:
                 pivot = r[i][p_y]
-                if pivot != 0:
+                if not is_zero(pivot):
                     for j in range(p_y, m_cols):
                         r[i][j] /= pivot
             p_y += 1 
@@ -265,13 +275,13 @@ class Matrix:
             p_y = -1
             # search of the first pivot
             for c in range(i, m_cols):
-                if abs(r[i][c]) != 0:
+                if not is_zero(r[i][c]):
                     p_y  = c
                     break; 
             if p_y == -1:
                 continue
             for j in range(i - 1, -1, -1):
-                if r[j][p_y] != 0:
+                if not is_zero(r[j][p_y]):
                     factor = r[j][p_y] / r[i][p_y]
                     for k in range(p_y, m_cols):
                         r[j][k] -= (r[i][k] * factor)
@@ -281,9 +291,9 @@ class Matrix:
     def determinant(self):
         m_rows, m_cols = self.shape()
         if m_rows != m_cols:
-            raise ValueError("Matrix must be square to compute determinant.")
+            return (ValueError("Matrix must be square to compute determinant."))
         if m_rows > 4:
-            raise ValueError("Determinant for matrices larger than 4x4 is not implemented.")
+            return (ValueError("Determinant for matrices larger than 4x4 is not implemented."))
         if m_rows == 1:
             return self[0][0]
         # Cramer rule
@@ -313,7 +323,7 @@ class Matrix:
         d = m_ref[0][0]
         for i in range(1, m_rows):
             d *= m_ref[i][i]
-        if abs(d) <= 1e-10:
+        if is_zero(d):
             raise ValueError("Matrix is singular, no inverse exists.")
         augmented_data = Matrix([[self[i][j] for j in range(m_cols)] + [ 0 if j != i else 1 for j in range (m_cols)]for i in range(m_rows)])
         res_rref = augmented_data.row_echelon()
@@ -324,10 +334,9 @@ class Matrix:
         m_ech, _ = self._forward_elimination(False)
         m_rows, m_cols = m_ech.shape()
         rank  = 0
-        epsilon = 1e-10
         for i in range(m_rows):
             for j in range (m_cols):
-                if (m_ech[i][j]) > epsilon:
+                if not is_zero(m_ech[i][j]):
                     rank += 1
                     break
         return (rank)
@@ -364,7 +373,15 @@ def angle_cos(u,v):
         raise ValueError("angle_cos excepts two Vector instances as arguments.")
     if u.size() != v.size():
         raise ValueError("Size incompatibles.")
-    return (u.dot(v) / (u.norm() * v.norm()))
+    norm_u = u.norm()
+    norm_v = v.norm()
+    if norm_u == 0 or norm_v == 0:
+        raise ValueError("Cannot compute angle with zero vector.")
+    dot = u.dot(v)
+    if isinstance(dot, complex):
+        dot = dot.real
+    cos = dot / (norm_u * norm_v)
+    return cos
 
 def cross_product(u, v):
     if not isinstance(u, Vector) or not isinstance(v, Vector):
