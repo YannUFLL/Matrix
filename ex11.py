@@ -7,6 +7,14 @@ def determinant():
     print("matrice:", m)
     print("determinant:",m.determinant())
 
+    m = Matrix([[8, 5 ,-2], 
+                [4,7,20],
+                [7,6,1]])
+    print("matrice:", m)
+    print("determinant:",m.determinant())
+
+    #-174
+
     m = Matrix([[0,3,4,5],
                 [7,4,1,3],
                 [9,8,7,3]])
