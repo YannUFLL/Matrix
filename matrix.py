@@ -57,8 +57,12 @@ class Vector:
         if self.size() != v.size():
             raise ValueError("Size incompatibles")
         res = 0
-        for i in range(v.size()):
-            res += self[i] * v[i]
+        if isinstance(v[0], complex):
+            for i in range(v.size()):
+                res += self[i] * v[i]
+        else:
+            for i in range(v.size()):
+                res += self[i] * v[i]
         return res
 
     def norm_1(self):

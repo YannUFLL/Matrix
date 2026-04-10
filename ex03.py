@@ -18,5 +18,7 @@ def dot_product_vector():
     print(v1.dot(Vector([96,144,633,541,7470,779,2])))
 
 
+
+
 if __name__=="__main__":
     dot_product_vector()

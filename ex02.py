@@ -6,6 +6,11 @@ def linear_interpolation_scalar():
     print(lerp(2.1, 1.05, 0.7))
     print(lerp(18, 5, 0.2))
 
+def linear_interpolation_scalar_complexe():
+    print(lerp(2 + 3j, 8 + 1j, 0.0))
+    print(lerp(2 + 3j, 8 + 1j, 1.0))
+    print(lerp(2 + 3j, 8 + 1j, 0.5))
+
 def linear_interpolation_vector():
     v1 = Vector([42,42])
     v2 = Vector([100, 100])
@@ -18,6 +23,13 @@ def linear_interpolation_vector():
     v3 = lerp(v1, v2, 0.7)
 
     print(v3)
+
+def linear_interpolation_vector_complexe():
+    v1 = Vector([2 + 3j, 1 + 4j])
+    v2 = Vector([8 + 1j, 3 + 2j])
+    print(lerp(v1, v2, 0.0))
+    print(lerp(v1, v2, 1.0))
+    print(lerp(v1, v2, 0.5))
 
 def linear_interpolation_matrix():
     m1 = Matrix([[100,100],
@@ -34,9 +46,27 @@ def linear_interpolation_matrix():
     m3 = lerp(m1, m2, 0.7) 
     print(m3)
 
+def linear_interpolation_matrix_complexe():
+    m1 = Matrix([[2 + 3j, 1 + 4j],
+                 [5 + 9j, 3 + 2j]])
+    m2 = Matrix([[8 + 1j, 3 + 2j],
+                 [7 + 6j, 1 + 6j]])
+    print(lerp(m1, m2, 0.0))
+    print(lerp(m1, m2, 1.0))
+    print(lerp(m1, m2, 0.5))
+
 
 if __name__ == "__main__":
+    print("\ntest: linear_interpolation_scalar")
     linear_interpolation_scalar()
+    print("\ntest: linear_interpolation_scalar_complexe")
+    linear_interpolation_scalar_complexe()
+    print("\ntest: linear_interpolation_vector")
     linear_interpolation_vector()
+    print("\ntest: linear_interpolation_vector_complexe")
+    linear_interpolation_vector_complexe()
+    print("\ntest: linear_interpolation_matrix")
     linear_interpolation_matrix()
+    print("\ntest: linear_interpolation_matrix_complexe")
+    linear_interpolation_matrix_complexe()
 
