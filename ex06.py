@@ -26,5 +26,9 @@ def cross_product_test():
     v2 = Vector([32,7,51])
     print(cross_product(v1, v2))
 
+    v1 = Vector([1 + 3j, 2 + 6j, 4 + 1j])
+    v2 = Vector([2 + 1j, 7 + 6j, 5 + 4j])
+    print(cross_product(v1, v2))
+
 if __name__ == "__main__":
     cross_product_test()

@@ -16,7 +16,7 @@ def cos_vector():
     print(angle_cos(v, Vector([-4])))
     try:
         print(angle_cos(v, Vector([0])))
-    except ZeroDivisionError as e:
+    except Exception as e:
         print(e)
     v = Vector([18,27,47])
     print(angle_cos(v, Vector([31,-45,41])))
@@ -25,6 +25,7 @@ def cos_vector():
     print(angle_cos(v, Vector([2,2])))
     print(angle_cos(v, Vector([2,1])))
     print(angle_cos(v, Vector([1.732,1])))
+    print(angle_cos(v, Vector([0 + 2j, 4 + 8j])))
     
 if __name__ == "__main__":
     cos_vector()

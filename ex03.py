@@ -16,9 +16,8 @@ def dot_product_vector():
         print(v)
     v1 = Vector([7,54,198,74,1241,145,368])
     print(v1.dot(Vector([96,144,633,541,7470,779,2])))
-
-
-
+    v1 = Vector([2 + 4j])
+    print(v1.dot(Vector([3])))
 
 if __name__=="__main__":
     dot_product_vector()
