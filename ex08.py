@@ -16,6 +16,11 @@ def trace():
                 [0, 6, 4]])
     print(m.trace())
     
+    # complex matrix trace
+    m = Matrix([[1+2j, 0],
+                [0, 3-1j]])
+    print(m.trace())
+    
 
 if __name__ == "__main__":
     trace()

@@ -78,12 +78,33 @@ def determinant():
     print("matrice:", m)
     print("determinant:",m.determinant())
 
+
+    m = Matrix([[1,0,0,0],
+                [0,0,1,0],
+                [0,0,0,1],
+                [0,2,0,0]])
+    print("matrice:", m)
+    print("determinant:",m.determinant())
+
+
+    m = Matrix([[1,0,0],
+                [0,0,1],
+                [0,0,2]])
+    print("matrice:", m)
+    print("determinant:",m.determinant())
+
+    m = Matrix([[1+1j, 2],
+                [3, 4-1j]])
+    print("matrice (complex):", m)
+    print("determinant:", m.determinant())
+
     m = Matrix([[1,-3,-4,7],
                 [-4,-6,-8,-12],
                 [-1,-3,-1,5],
                 [-7,-1,-2,-1]])
     print("matrice:", m)
     print("determinant:",m.determinant())
+
 
 
 

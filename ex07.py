@@ -43,6 +43,14 @@ def vector_matrix_multiplication():
     r = m.mul_vec(Vector([1, 2, 3]))
     print(r)
 
+    # complex numbers: matrix * vector
+    m = Matrix([[1+2j, 0],
+                [0, 3-1j]])
+    r = m.mul_vec(Vector([1+1j, 2-2j]))
+    print(r)
+
+    
+
 def matrix_matrix_multiplication():
     try:
         m1 = Matrix([[1, 2, 3],
@@ -106,6 +114,13 @@ def matrix_matrix_multiplication():
                  [5], 
                  [6]])
 
+    print(m1.mul_mat(m2))
+
+    # complex matrices multiplication
+    m1 = Matrix([[1+2j, 0],
+                 [0, 3-1j]])
+    m2 = Matrix([[2-1j, 1],
+                 [0, 1+1j]])
     print(m1.mul_mat(m2))
 
 if __name__ == "__main__":

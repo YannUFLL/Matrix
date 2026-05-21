@@ -18,6 +18,13 @@ def transpose():
                 [4, -23, 4],
                 [0, 6, 4]])
     print(m.transpose())
+
+    m = Matrix([[1+2j, 0],
+                [0, 3-4j]])
+    print("complex transpose:", m.transpose())
+
+    m = Matrix([[1+1j, 2-1j, 0]])
+    print("complex transpose 2:", m.transpose())
     
 if __name__ == "__main__":
     transpose()

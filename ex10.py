@@ -80,7 +80,18 @@ def row_echelon():
         [3, 4]
     ])
     print("matrice:", m)
+
     print("row_matrice:", m.row_echelon());
+    m = Matrix([[1+1j, 2],
+                [3, 4-1j]])
+    print("matrice (complex):", m)
+    print("row_matrice:", m.row_echelon())
+
+    m = Matrix([[1+2j, 2+2j, 3],
+                [2+4j, 4+8j, 6],
+                [3, 6, 9]])
+    print("matrice (complex 2):", m)
+    print("row_matrice:", m.row_echelon())
     
 if __name__ == "__main__":
     row_echelon()

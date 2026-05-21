@@ -13,6 +13,7 @@ def test():
             row = proj_mat.data[i]
             print(f"{row[0]}, {row[1]}, {row[2]}, {row[3]}")
             
+        print("transpose:", m.transpose())
     except Exception as e:
         print(f"Erreur : {e}")
 

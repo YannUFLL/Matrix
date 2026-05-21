@@ -25,6 +25,10 @@ def inverse():
                 [7, 6, 1]])
     print("matrice:", m)
     print("inverse:", m.inverse())
+
+    m = Matrix([[1+1j, 0], [0, 1-1j]])
+    print("matrice (complex):", m)
+    print("inverse:", m.inverse())
     
 if __name__ == "__main__":
     inverse()
