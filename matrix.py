@@ -231,7 +231,7 @@ class Matrix:
         while i < m_rows and p_y < m_cols:
             tmp = 0 
             line_to_swap = i
-            # step 1: find the pivot
+            # step 1: find the pivot (a big pivot allow lower loose of float precision when we divided)
             for j in range(i, m_rows):
                 if abs(r[j][p_y]) > tmp and not is_zero(r[j][p_y]):
                     tmp = abs(r[j][p_y])
