@@ -190,38 +190,6 @@ class Matrix:
                 r[j][i] = self[i][j]
         return (r)
 
-    def _gauss_method(self):
-        m_rows, m_cols = self.shape()
-        r = Matrix([[self[i][j] for j in range(m_cols)] for i in range(m_rows)])
-        p_y = 0
-        i = 0
-        while i < m_rows and p_y < m_cols:
-            tmp = 0 
-            line_to_swap = i
-            # step 1: find the pivot
-            for j in range(i, m_rows):
-                if abs(r[j][p_y]) > tmp and not is_zero(r[j][p_y]):
-                    tmp = abs(r[j][p_y])
-                    line_to_swap = j
-            if tmp == 0:
-                p_y += 1
-                continue
-            
-            # step 2: swap line
-            tmp = r[i]
-            r.data[i] = r.data[line_to_swap]
-            r.data[line_to_swap] = tmp
-            # step 3: elimination of the others unknow bellow the pivot
-            for j in range(i + 1, m_rows):
-                if is_zero(r[i][p_y]):
-                    continue
-                factor = r[j][p_y] / r[i][p_y] 
-                # factorisation of the line
-                # elimination of x 
-                for k in range(p_y, m_cols):
-                    r[j][k] -= (r[i][k] * factor)
-        return(r)
-
     def _forward_elimination(self, normalize=False):
         m_rows, m_cols = self.shape()
         r = Matrix([[self[i][j] for j in range(m_cols)] for i in range(m_rows)])
