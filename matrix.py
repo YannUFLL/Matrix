@@ -1,8 +1,6 @@
 import math
 
 def is_zero(x, epsilon=1e-10):
-    if isinstance(x, complex):
-        return abs(x.real) < epsilon and abs(x.imag) < epsilon
     return abs(x) < epsilon
 
 class Vector: 
