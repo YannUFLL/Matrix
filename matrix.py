@@ -257,9 +257,9 @@ class Matrix:
     def determinant(self):
         m_rows, m_cols = self.shape()
         if m_rows != m_cols:
-            return (ValueError("Matrix must be square to compute determinant."))
+            raise ValueError("Matrix must be square to compute determinant.")
         if m_rows > 4:
-            return (ValueError("Determinant for matrices larger than 4x4 is not implemented."))
+            raise ValueError("Determinant for matrices larger than 4x4 is not implemented.")
         if m_rows == 1:
             return self[0][0]
         # Cramer rule
