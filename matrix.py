@@ -24,8 +24,8 @@ class Vector:
         if rows * cols > self.size():
             raise ValueError("Dimensions incompatibles")
         new_data = []
-        for i in rows:
-            new_data.append(self.data[ i * cols : i * cols + cols])
+        for i in range(rows):
+            new_data.append(self.data[i * cols : i * cols + cols])
         return Matrix(new_data)
 
     def copy(self):
