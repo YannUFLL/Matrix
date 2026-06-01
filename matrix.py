@@ -345,7 +345,7 @@ def angle_cos(u,v):
         raise ValueError("Cannot compute angle with zero vector.")
     dot = u.dot(v)
     if isinstance(dot, complex):
-        dot = dot.real
+        dot = abs(dot)
     cos = dot / (norm_u * norm_v)
     return cos
 
