@@ -105,9 +105,6 @@ def determinant():
     print("matrice:", m)
     print("determinant:",m.determinant())
 
-
-
-
     
 if __name__ == "__main__":
     determinant()

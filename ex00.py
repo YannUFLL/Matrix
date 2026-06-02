@@ -10,7 +10,6 @@ def add_vector_complex():
     v.add(Vector([2 + 7j, 2 + 3j, 2 + 1j]))
     print(v)
 
-
 def sub_vector_real():
     v = Vector([7,4,3])
     v.sub(Vector([10,9,8]))
